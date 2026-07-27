@@ -83,4 +83,4 @@ resilience4j:
 
 logging:
   level:
-    com.finflow.customer: DEBUG
+    com.finflow.customer: TRACE
