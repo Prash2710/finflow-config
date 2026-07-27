@@ -1,2 +1,80 @@
-test:
-  message: Hello from Config Server
+server:
+  port: 8082
+
+spring:
+  application:
+    name: customer-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer_db
+    username: postgres
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    default-schema: customer
+    schemas: customer
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers
+
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+
+  circuitbreaker:
+    instances:
+      accountService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 20s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
+  retry:
+    instances:
+      accountService:
+        max-attempts: 3
+        wait-duration: 2s
+
+  ratelimiter:
+    instances:
+      accountService:
+        limit-for-period: 5
+        limit-refresh-period: 10s
+        timeout-duration: 2s
+
+  bulkhead:
+    instances:
+      accountService:
+        max-concurrent-calls: 10
+        max-wait-duration: 2s
+
+logging:
+  level:
+    com.finflow.customer: DEBUG
