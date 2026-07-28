@@ -91,3 +91,8 @@ resilience4j:
 logging:
   level:
     com.finflow.customer: TRACE
+
+
+jwt:
+  secret: 7h1rM6xP1xq+3q5wR0M0Q4P1HhQxgM5o6z6N8YtYQYg=
+  expiration: 86400000
