@@ -69,11 +69,21 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include:
+          - health
+          - info
+          - circuitbreakers
+          - circuitbreakerevents
+          - retries
+          - retryevents
 
   endpoint:
     health:
       show-details: always
+
+  health:
+    circuitbreakers:
+      enabled: true
 
   tracing:
     sampling:
